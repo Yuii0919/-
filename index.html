@@ -61,6 +61,33 @@
     li { margin: 5px 0; }
     .muted { color: var(--muted); font-size: 14px; }
     .schedule-wrap { overflow-x: auto; }
+    .schedule-switch {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+    .switch-btn {
+      border: 1px solid #3a558e;
+      background: #1a2a4d;
+      color: #dbe8ff;
+      border-radius: 8px;
+      padding: 6px 10px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .switch-btn.active {
+      background: #26457e;
+      border-color: #67b3ff;
+      color: #ffffff;
+    }
+    .schedule-table-view { display: block; }
+    .schedule-card-view { display: none; }
+    .schedule-area.force-cards .schedule-table-view { display: none; }
+    .schedule-area.force-cards .schedule-card-view { display: block; }
+    .schedule-area.force-table .schedule-table-view { display: block; }
+    .schedule-area.force-table .schedule-card-view { display: none; }
     .schedule-table {
       width: 100%;
       min-width: 880px;
@@ -76,6 +103,7 @@
       vertical-align: middle;
       text-align: center;
       height: 78px;
+      word-break: break-word;
     }
     .schedule-table th {
       background: #162449;
@@ -101,6 +129,32 @@
       font-size: 12px;
       color: var(--muted);
     }
+    .day-card {
+      margin-bottom: 10px;
+    }
+    .day-title {
+      font-size: 16px;
+      margin-bottom: 6px;
+      color: #dce9ff;
+    }
+    .day-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .day-list li {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 8px 10px;
+      margin-bottom: 7px;
+      background: rgba(255, 255, 255, 0.02);
+      font-size: 13px;
+    }
+    .day-slot {
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+    }
     .kbd {
       font-family: Consolas, monospace;
       background: #1f2c4f;
@@ -116,11 +170,218 @@
       font-size: 13px;
       text-align: center;
     }
+    @media (max-width: 900px) {
+      .wrap {
+        padding: 18px 12px 40px;
+      }
+      h1 {
+        font-size: 24px;
+      }
+      h2 {
+        font-size: 19px;
+      }
+      .card {
+        padding: 12px;
+        border-radius: 12px;
+      }
+      .grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+      .schedule-wrap {
+        overflow-x: visible;
+      }
+      .schedule-table {
+        min-width: 0;
+        width: 100%;
+        font-size: 12px;
+      }
+      .schedule-table th,
+      .schedule-table td {
+        padding: 8px;
+        height: 66px;
+      }
+      .slot {
+        width: 72px;
+        font-size: 11px;
+        white-space: normal;
+      }
+      .cell-title { margin-bottom: 2px; }
+    }
+    @media (max-width: 560px) {
+      .wrap {
+        padding: 14px 10px 30px;
+      }
+      h1 {
+        font-size: 21px;
+      }
+      h2 {
+        font-size: 17px;
+        margin-top: 18px;
+      }
+      .sub,
+      .muted {
+        font-size: 13px;
+      }
+      .tag {
+        font-size: 11px;
+        padding: 2px 7px;
+      }
+      .schedule-table {
+        min-width: 0;
+        width: 100%;
+        font-size: 10px;
+      }
+      .schedule-table th,
+      .schedule-table td {
+        padding: 5px 4px;
+        height: 58px;
+      }
+      .slot {
+        width: 60px;
+        font-size: 10px;
+        line-height: 1.25;
+      }
+      .cell-title {
+        font-size: 10px;
+        margin-bottom: 1px;
+        line-height: 1.2;
+      }
+      .note {
+        font-size: 10px;
+        line-height: 1.2;
+      }
+      .switch-btn {
+        font-size: 12px;
+        padding: 5px 8px;
+      }
+      .day-list li {
+        font-size: 12px;
+      }
+    }
   </style>
 </head>
 <body>
   <div class="wrap">
     <h1>期中考統整</h1>
+
+    <h2>考試週排程（依課表時段）</h2>
+    <div class="card">
+      <p class="muted" style="margin: 0 0 10px;">考試週原則：<b>每一科只考一堂</b>。課表上<b>行動裝置</b>若出現兩次（週一、週二），<b>週一為複習日、週二才是正式考試</b>，不要把週一當第二次考試。<b>大數據</b>假設<b>週二考完</b>，<b>從週三開始排程裡就不再列入大數據</b>。</p>
+    </div>
+    <div class="card schedule-switch">
+      <span class="muted">檢視：</span>
+      <button id="btnTable" type="button" class="switch-btn">表格</button>
+      <button id="btnCards" type="button" class="switch-btn">手機卡片</button>
+    </div>
+    <div id="scheduleArea" class="schedule-area">
+      <div class="card schedule-wrap schedule-table-view">
+        <table class="schedule-table">
+          <thead>
+            <tr>
+              <th>節次 / 時間</th>
+              <th>週一</th>
+              <th>週二</th>
+              <th>週三</th>
+              <th>週四</th>
+              <th>週五</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="slot">B01<br>18:20-19:05</td>
+              <td><span class="cell-title">資料庫</span>選擇題／應用題考試</td>
+              <td><span class="cell-title">大數據</span>選擇題考試</td>
+              <td><span class="cell-title">大數據</span>休息</td>
+              <td><span class="cell-title">文字探勘</span>50題單選</td>
+              <td><span class="cell-title">伺服器</span></td>
+            </tr>
+            <tr>
+              <td class="slot">B02<br>19:10-19:55</td>
+              <td><span class="cell-title">資料庫</span>休息</td>
+              <td><span class="cell-title">大數據</span>休息</td>
+              <td><span class="cell-title">大數據</span>休息</td>
+              <td><span class="cell-title">文字探勘</span>休息</td>
+              <td><span class="cell-title">伺服器</span></td>
+            </tr>
+            <tr>
+              <td class="slot">B03<br>20:05-20:50</td>
+              <td><span class="cell-title">行動裝置</span>複習</td>
+              <td><span class="cell-title">行動裝置</span>是非題20題/選擇題30題</td>
+              <td><span class="cell-title">企業網路</span></td>
+              <td><span class="cell-title">知識管理</span>選擇/問答題考試</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td class="slot">B04<br>20:55-21:40</td>
+              <td><span class="cell-title">行動裝置</span>複習</td>
+              <td><span class="cell-title">行動裝置</span>休息</td>
+              <td><span class="cell-title">企業網路</span></td>
+              <td><span class="cell-title">知識管理</span>休息</td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="schedule-card-view">
+        <section class="card day-card">
+          <h3 class="day-title">週一</h3>
+          <ul class="day-list">
+            <li><span class="day-slot">B01 18:20-19:05</span>資料庫｜選擇題／應用題考試</li>
+            <li><span class="day-slot">B02 19:10-19:55</span>資料庫｜休息</li>
+            <li><span class="day-slot">B03 20:05-20:50</span>行動裝置｜複習</li>
+            <li><span class="day-slot">B04 20:55-21:40</span>行動裝置｜複習</li>
+          </ul>
+        </section>
+        <section class="card day-card">
+          <h3 class="day-title">週二</h3>
+          <ul class="day-list">
+            <li><span class="day-slot">B01 18:20-19:05</span>大數據｜選擇題考試</li>
+            <li><span class="day-slot">B02 19:10-19:55</span>大數據｜休息</li>
+            <li><span class="day-slot">B03 20:05-20:50</span>行動裝置｜是非題20題/選擇題30題</li>
+            <li><span class="day-slot">B04 20:55-21:40</span>行動裝置｜休息</li>
+          </ul>
+        </section>
+        <section class="card day-card">
+          <h3 class="day-title">週三</h3>
+          <ul class="day-list">
+            <li><span class="day-slot">B01 18:20-19:05</span>大數據｜休息</li>
+            <li><span class="day-slot">B02 19:10-19:55</span>大數據｜休息</li>
+            <li><span class="day-slot">B03 20:05-20:50</span>企業網路</li>
+            <li><span class="day-slot">B04 20:55-21:40</span>企業網路</li>
+          </ul>
+        </section>
+        <section class="card day-card">
+          <h3 class="day-title">週四</h3>
+          <ul class="day-list">
+            <li><span class="day-slot">B01 18:20-19:05</span>文字探勘｜50題單選</li>
+            <li><span class="day-slot">B02 19:10-19:55</span>文字探勘｜休息</li>
+            <li><span class="day-slot">B03 20:05-20:50</span>知識管理｜選擇/問答題考試</li>
+            <li><span class="day-slot">B04 20:55-21:40</span>知識管理｜休息</li>
+          </ul>
+        </section>
+        <section class="card day-card">
+          <h3 class="day-title">週五</h3>
+          <ul class="day-list">
+            <li><span class="day-slot">B01 18:20-19:05</span>伺服器</li>
+            <li><span class="day-slot">B02 19:10-19:55</span>伺服器</li>
+            <li><span class="day-slot">B03 20:05-20:50</span>—</li>
+            <li><span class="day-slot">B04 20:55-21:40</span>—</li>
+          </ul>
+        </section>
+      </div>
+    </div>
+    <div class="grid">
+      <section class="card">
+        <h3>使用原則</h3>
+        <ul>
+          <li>每節結束後休息 5-10 分鐘，再進下一節</li>
+          <li>重複出現在課表的科目：以「一堂考試」為準，另一堂當複習</li>
+          <li>週三起讀書表不再安排大數據</li>
+          <li>遇到卡關題先標記，下一節再回頭處理</li>
+        </ul>
+      </section>
+    </div>
 
     <h2>各科重點</h2>
     <div class="grid">
@@ -176,70 +437,6 @@
       </section>
     </div>
 
-    <h2>考試週排程（依課表時段）</h2>
-    <div class="card">
-      <p class="muted" style="margin: 0 0 10px;">考試週原則：<b>每一科只考一堂</b>。課表上<b>行動裝置</b>若出現兩次（週一、週二），<b>週一為複習日、週二才是正式考試</b>，不要把週一當第二次考試。<b>大數據</b>假設<b>週二考完</b>，<b>從週三開始排程裡就不再列入大數據</b>。</p>
-    </div>
-    <div class="card schedule-wrap">
-      <table class="schedule-table">
-        <thead>
-          <tr>
-            <th>節次 / 時間</th>
-            <th>週一</th>
-            <th>週二</th>
-            <th>週三</th>
-            <th>週四</th>
-            <th>週五</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="slot">B01<br>18:20-19:05</td>
-            <td><span class="cell-title">資料庫</span>選擇題／應用題考試</td>
-            <td><span class="cell-title">大數據</span>選擇題考試</td>
-            <td><span class="cell-title">大數據</span>休息</td>
-            <td><span class="cell-title">文字探勘</span>50題單選</td>
-            <td><span class="cell-title">伺服器</span></td>
-          </tr>
-          <tr>
-            <td class="slot">B02<br>19:10-19:55</td>
-            <td><span class="cell-title">資料庫</span>休息</td>
-            <td><span class="cell-title">大數據</span>休息</td>
-            <td><span class="cell-title">大數據</span>休息</td>
-            <td><span class="cell-title">文字探勘</span>休息</td>
-            <td><span class="cell-title">伺服器</span></td>
-          </tr>
-          <tr>
-            <td class="slot">B03<br>20:05-20:50</td>
-            <td><span class="cell-title">行動裝置</span>複習</td>
-            <td><span class="cell-title">行動裝置</span>是非題20題/選擇題30題</td>
-            <td><span class="cell-title">企業網路</span></td>
-            <td><span class="cell-title">知識管理</span>選擇/問答題考試</td>
-            <td></td>
-          </tr>
-          <tr>
-            <td class="slot">B04<br>20:55-21:40</td>
-            <td><span class="cell-title">行動裝置</span>複習</td>
-            <td><span class="cell-title">行動裝置</span>休息</td>
-            <td><span class="cell-title">企業網路</span></td>
-            <td><span class="cell-title">知識管理</span>休息</td>
-            <td></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="grid">
-      <section class="card">
-        <h3>使用原則</h3>
-        <ul>
-          <li>每節結束後休息 5-10 分鐘，再進下一節</li>
-          <li>重複出現在課表的科目：以「一堂考試」為準，另一堂當複習</li>
-          <li>週三起讀書表不再安排大數據</li>
-          <li>遇到卡關題先標記，下一節再回頭處理</li>
-        </ul>
-      </section>
-    </div>
-
     <h2>檔案與連結</h2>
     <div class="card">
       <ul>
@@ -251,5 +448,26 @@
 
     <p class="footer">期中考加油：先求穩定拿分，再追高分。</p>
   </div>
+  <script>
+    (function () {
+      var area = document.getElementById("scheduleArea");
+      var btnTable = document.getElementById("btnTable");
+      var btnCards = document.getElementById("btnCards");
+      if (!area || !btnTable || !btnCards) return;
+
+      function setView(view) {
+        area.classList.remove("force-table", "force-cards");
+        area.classList.add(view === "cards" ? "force-cards" : "force-table");
+        btnTable.classList.toggle("active", view === "table");
+        btnCards.classList.toggle("active", view === "cards");
+      }
+
+      var defaultView = window.innerWidth <= 700 ? "cards" : "table";
+      setView(defaultView);
+
+      btnTable.addEventListener("click", function () { setView("table"); });
+      btnCards.addEventListener("click", function () { setView("cards"); });
+    })();
+  </script>
 </body>
 </html>
