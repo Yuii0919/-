@@ -123,6 +123,33 @@
       margin-bottom: 4px;
       color: #eaf1ff;
     }
+    .schedule-table td,
+    .day-list li {
+      transition: transform 0.16s ease, box-shadow 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+    }
+    .schedule-table td.clickable,
+    .day-list li.clickable {
+      cursor: pointer;
+    }
+    .schedule-table td.clickable:hover,
+    .day-list li.clickable:hover {
+      border-color: #4e76be;
+      background: rgba(103, 179, 255, 0.12);
+    }
+    .schedule-selected {
+      background: rgba(103, 179, 255, 0.2) !important;
+      border-color: #67b3ff !important;
+      box-shadow: 0 0 0 1px rgba(103, 179, 255, 0.45), 0 8px 18px rgba(0, 0, 0, 0.22);
+      transform: translateY(-1px) scale(1.01);
+    }
+    .subject-card {
+      scroll-margin-top: 12px;
+      transition: box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+    .subject-focus {
+      border-color: #67b3ff !important;
+      box-shadow: 0 0 0 1px rgba(103, 179, 255, 0.45), 0 10px 24px rgba(0, 0, 0, 0.26);
+    }
     .note {
       display: block;
       margin-top: 4px;
@@ -383,9 +410,18 @@
       </section>
     </div>
 
+    <h2>檔案與連結</h2>
+    <div class="card">
+      <ul>
+        <li>資料庫選擇題 PDF：<span class="kbd">114-2-期中考試選擇題.pdf</span></li>
+        <li>你的知識管理整理頁：<a href="https://yuii0919.github.io/knowledge/" target="_blank" rel="noopener">https://yuii0919.github.io/knowledge/</a></li>
+        <li>致理數位學院：<a href="https://dlc.chihlee.edu.tw/mooc/index.php" target="_blank" rel="noopener">https://dlc.chihlee.edu.tw/mooc/index.php</a></li>
+      </ul>
+    </div>
+
     <h2>各科重點</h2>
     <div class="grid">
-      <section class="card">
+      <section id="subject-knowledge" class="card subject-card">
         <span class="tag t-accent">知識管理</span>
         <ul>
           <li>考試方式：選擇/問答題考試</li>
@@ -395,7 +431,7 @@
         </ul>
       </section>
 
-      <section class="card">
+      <section id="subject-text-mining" class="card subject-card">
         <span class="tag t-warn">文字探勘</span>
         <ul>
           <li>考試方式：50 題單選（每題 2 分）</li>
@@ -405,7 +441,7 @@
         </ul>
       </section>
 
-      <section class="card">
+      <section id="subject-mobile" class="card subject-card">
         <span class="tag t-ok">行動裝置</span>
         <ul>
           <li>考試方式：是非題 20 題 / 選擇題 30 題</li>
@@ -415,7 +451,7 @@
         </ul>
       </section>
 
-      <section class="card">
+      <section id="subject-database" class="card subject-card">
         <span class="tag t-accent">資料庫管理系統(下)</span>
         <ul>
           <li>考試方式：選擇題 76% / 應用題 24%</li>
@@ -426,7 +462,7 @@
         </ul>
       </section>
 
-      <section class="card">
+      <section id="subject-bigdata" class="card subject-card">
         <span class="tag t-warn">大數據概論</span>
         <ul>
           <li>考試方式：選擇題考試（依老師公告）</li>
@@ -435,15 +471,6 @@
           <li>備註：考試週此科只考一堂</li>
         </ul>
       </section>
-    </div>
-
-    <h2>檔案與連結</h2>
-    <div class="card">
-      <ul>
-        <li>資料庫選擇題 PDF：<span class="kbd">114-2-期中考試選擇題.pdf</span></li>
-        <li>你的知識管理整理頁：<a href="https://yuii0919.github.io/knowledge/" target="_blank" rel="noopener">https://yuii0919.github.io/knowledge/</a></li>
-        <li>致理數位學院：<a href="https://dlc.chihlee.edu.tw/mooc/index.php" target="_blank" rel="noopener">https://dlc.chihlee.edu.tw/mooc/index.php</a></li>
-      </ul>
     </div>
 
     <p class="footer">期中考加油：先求穩定拿分，再追高分。</p>
@@ -462,11 +489,87 @@
         btnCards.classList.toggle("active", view === "cards");
       }
 
+      var subjectMap = {
+        "知識管理": "subject-knowledge",
+        "文字探勘": "subject-text-mining",
+        "行動裝置": "subject-mobile",
+        "資料庫": "subject-database",
+        "資料庫管理系統(下)": "subject-database",
+        "大數據": "subject-bigdata",
+        "大數據概論": "subject-bigdata"
+      };
+
+      var selectedEls = [];
+      function clearSelected() {
+        selectedEls.forEach(function (el) { el.classList.remove("schedule-selected"); });
+        selectedEls = [];
+      }
+
+      function focusSubjectByName(subjectName) {
+        var targetId = subjectMap[subjectName];
+        if (!targetId) return;
+        var target = document.getElementById(targetId);
+        if (!target) return;
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+        target.classList.add("subject-focus");
+        setTimeout(function () { target.classList.remove("subject-focus"); }, 1200);
+      }
+
+      function getSubjectFromCell(el) {
+        var title = el.querySelector(".cell-title");
+        if (!title) return "";
+        return (title.textContent || "").trim();
+      }
+
+      function getSubjectFromCardItem(el) {
+        var text = (el.textContent || "").trim();
+        if (!text) return "";
+        var payload = text.split(" ").slice(1).join(" ").trim();
+        var subjectPart = payload.split("｜")[0].trim();
+        return subjectPart;
+      }
+
+      function markClickable() {
+        var cells = area.querySelectorAll(".schedule-table td");
+        cells.forEach(function (cell) {
+          if (cell.querySelector(".cell-title")) cell.classList.add("clickable");
+        });
+        var items = area.querySelectorAll(".day-list li");
+        items.forEach(function (li) {
+          var subject = getSubjectFromCardItem(li);
+          if (subject && subject !== "—") li.classList.add("clickable");
+        });
+      }
+
       var defaultView = window.innerWidth <= 700 ? "cards" : "table";
       setView(defaultView);
+      markClickable();
 
       btnTable.addEventListener("click", function () { setView("table"); });
       btnCards.addEventListener("click", function () { setView("cards"); });
+
+      area.addEventListener("click", function (event) {
+        var cell = event.target.closest(".schedule-table td");
+        if (cell && area.contains(cell)) {
+          var subject = getSubjectFromCell(cell);
+          if (!subject) return;
+          clearSelected();
+          cell.classList.add("schedule-selected");
+          selectedEls.push(cell);
+          focusSubjectByName(subject);
+          return;
+        }
+
+        var item = event.target.closest(".day-list li");
+        if (item && area.contains(item)) {
+          var itemSubject = getSubjectFromCardItem(item);
+          if (!itemSubject || itemSubject === "—") return;
+          clearSelected();
+          item.classList.add("schedule-selected");
+          selectedEls.push(item);
+          focusSubjectByName(itemSubject);
+        }
+      });
     })();
   </script>
 </body>
