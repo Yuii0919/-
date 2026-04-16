@@ -3,35 +3,88 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>期中考衝刺整理</title>
+  <title>期中考統整</title>
   <style>
     :root {
-      --bg: #0b1020;
-      --card: #121a2f;
-      --muted: #9fb0d0;
-      --text: #e8eeff;
-      --accent: #67b3ff;
-      --ok: #5bd39a;
-      --warn: #ffd166;
-      --line: #233257;
+      --bg-0: #0b0f16;
+      --bg-1: #111827;
+      --bg-2: #0c1018;
+      --card: rgba(17, 24, 39, 0.88);
+      --muted: #b9a8d4;
+      --text: #f6f1ff;
+      --accent: #e879f9;
+      --accent-2: #5eead4;
+      --line: rgba(148, 163, 184, 0.18);
+      --shadow: 0 16px 42px rgba(0, 0, 0, 0.38);
+      --head-bg: rgba(30, 41, 59, 0.92);
+      --slot-bg: rgba(255, 255, 255, 0.04);
+      --ok: #5eead4;
+      --warn: #fcd34d;
+      --tag-a-bg: rgba(232, 121, 249, 0.18);
+      --tag-a-bd: rgba(232, 121, 249, 0.45);
+      --tag-b-bg: rgba(94, 234, 212, 0.16);
+      --tag-b-bd: rgba(94, 234, 212, 0.42);
+    }
+    html[data-tone="mint"] {
+      --accent: #2dd4bf;
+      --accent-2: #f472b6;
+      --bg-0: #0a1214;
+      --bg-1: #0f1a1c;
+      --bg-2: #0a1012;
+      --card: rgba(15, 26, 28, 0.9);
+      --head-bg: rgba(18, 64, 72, 0.88);
+      --line: rgba(94, 234, 212, 0.22);
+      --tag-a-bg: rgba(45, 212, 191, 0.16);
+      --tag-a-bd: rgba(45, 212, 191, 0.45);
+      --tag-b-bg: rgba(244, 114, 182, 0.16);
+      --tag-b-bd: rgba(244, 114, 182, 0.42);
+    }
+    html {
+      scroll-behavior: smooth;
     }
     * { box-sizing: border-box; }
     body {
       margin: 0;
       font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
-      background: linear-gradient(160deg, #0b1020, #131b31 40%, #0d1428);
+      background-color: var(--bg-2);
+      background-image:
+        radial-gradient(120% 55% at 50% 0%, rgba(99, 102, 241, 0.09), transparent 52%),
+        linear-gradient(180deg, var(--bg-1) 0%, var(--bg-0) 42%, var(--bg-2) 100%);
+      background-attachment: fixed;
       color: var(--text);
       line-height: 1.6;
+      min-height: 100vh;
+    }
+    html[data-tone="mint"] body {
+      background-image:
+        radial-gradient(120% 55% at 50% 0%, rgba(45, 212, 191, 0.08), transparent 52%),
+        linear-gradient(180deg, var(--bg-1) 0%, var(--bg-0) 42%, var(--bg-2) 100%);
     }
     .wrap {
       max-width: 1100px;
       margin: 0 auto;
       padding: 24px 16px 60px;
+      position: relative;
+      z-index: 1;
     }
     h1, h2, h3 { margin: 0 0 10px; line-height: 1.3; }
-    h1 { font-size: 30px; }
-    h2 { font-size: 22px; color: #d7e5ff; margin-top: 24px; }
-    h3 { font-size: 18px; color: #c4d7ff; }
+    h1 {
+      font-size: 30px;
+      letter-spacing: 0.02em;
+      animation: fadeUp 0.7s ease both;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    h2 {
+      font-size: 22px;
+      color: #efe6ff;
+      margin-top: 24px;
+      padding-left: 12px;
+      border-left: 4px solid var(--accent);
+    }
+    h3 { font-size: 18px; color: #e8ddff; }
     .sub { color: var(--muted); margin-bottom: 16px; }
     .grid {
       display: grid;
@@ -39,11 +92,17 @@
       gap: 14px;
     }
     .card {
-      background: rgba(18, 26, 47, 0.95);
+      background: var(--card);
       border: 1px solid var(--line);
       border-radius: 14px;
       padding: 16px;
-      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.25);
+      box-shadow: var(--shadow);
+      transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+    }
+    .card:not(.schedule-wrap):hover {
+      transform: translateY(-2px);
+      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.42);
+      border-color: rgba(255, 255, 255, 0.12);
     }
     .tag {
       display: inline-block;
@@ -54,9 +113,9 @@
       margin-bottom: 6px;
       border: 1px solid transparent;
     }
-    .t-accent { background: rgba(103, 179, 255, 0.15); border-color: rgba(103, 179, 255, 0.4); color: #9ed0ff; }
-    .t-ok { background: rgba(91, 211, 154, 0.15); border-color: rgba(91, 211, 154, 0.35); color: #97edc2; }
-    .t-warn { background: rgba(255, 209, 102, 0.15); border-color: rgba(255, 209, 102, 0.35); color: #ffe29b; }
+    .t-accent { background: var(--tag-a-bg); border-color: var(--tag-a-bd); color: #f5e0ff; }
+    .t-ok { background: var(--tag-b-bg); border-color: var(--tag-b-bd); color: #d7fff4; }
+    .t-warn { background: rgba(252, 211, 77, 0.14); border-color: rgba(252, 211, 77, 0.38); color: #fff1c2; }
     ul { margin: 8px 0 0; padding-left: 20px; }
     li { margin: 5px 0; }
     .muted { color: var(--muted); font-size: 14px; }
@@ -69,18 +128,27 @@
       margin-bottom: 10px;
     }
     .switch-btn {
-      border: 1px solid #3a558e;
-      background: #1a2a4d;
-      color: #dbe8ff;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(255, 255, 255, 0.06);
+      color: #f3ecff;
       border-radius: 8px;
       padding: 6px 10px;
       font-size: 13px;
       cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    }
+    .switch-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+    }
+    .switch-btn:active {
+      transform: translateY(0);
     }
     .switch-btn.active {
-      background: #26457e;
-      border-color: #67b3ff;
+      background: rgba(255, 255, 255, 0.1);
+      border-color: var(--accent);
       color: #ffffff;
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12);
     }
     .schedule-table-view { display: block; }
     .schedule-card-view { display: none; }
@@ -106,14 +174,14 @@
       word-break: break-word;
     }
     .schedule-table th {
-      background: #162449;
-      color: #dbe8ff;
+      background: var(--head-bg);
+      color: #f0e8ff;
       text-align: center;
     }
     .slot {
       width: 130px;
-      background: rgba(255, 255, 255, 0.03);
-      color: #c5d7ff;
+      background: var(--slot-bg);
+      color: #e6dcff;
       font-weight: 600;
       white-space: nowrap;
     }
@@ -121,7 +189,7 @@
       display: block;
       font-weight: 700;
       margin-bottom: 4px;
-      color: #eaf1ff;
+      color: #fff7ff;
     }
     .schedule-table td,
     .day-list li {
@@ -133,22 +201,38 @@
     }
     .schedule-table td.clickable:hover,
     .day-list li.clickable:hover {
-      border-color: #4e76be;
-      background: rgba(103, 179, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.22);
+      background: rgba(255, 255, 255, 0.06);
     }
     .schedule-selected {
-      background: rgba(103, 179, 255, 0.2) !important;
-      border-color: #67b3ff !important;
-      box-shadow: 0 0 0 1px rgba(103, 179, 255, 0.45), 0 8px 18px rgba(0, 0, 0, 0.22);
+      background: rgba(255, 255, 255, 0.1) !important;
+      border-color: var(--accent) !important;
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12), 0 8px 18px rgba(0, 0, 0, 0.22);
       transform: translateY(-1px) scale(1.01);
     }
     .subject-card {
       scroll-margin-top: 12px;
-      transition: box-shadow 0.2s ease, border-color 0.2s ease;
+      transition: box-shadow 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+      cursor: pointer;
+    }
+    .subject-card:active {
+      transform: translateY(0) scale(0.99);
     }
     .subject-focus {
-      border-color: #67b3ff !important;
-      box-shadow: 0 0 0 1px rgba(103, 179, 255, 0.45), 0 10px 24px rgba(0, 0, 0, 0.26);
+      border-color: var(--accent) !important;
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.14), 0 10px 24px rgba(0, 0, 0, 0.26);
+    }
+    .subject-card-active {
+      border-color: var(--accent) !important;
+      box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.16), 0 16px 40px rgba(0, 0, 0, 0.45) !important;
+    }
+    @keyframes subjectCardPulse {
+      0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.35); transform: translateY(-2px) scale(1); }
+      70% { box-shadow: 0 0 0 14px rgba(255, 255, 255, 0); transform: translateY(-2px) scale(1.01); }
+      100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); transform: translateY(-2px) scale(1); }
+    }
+    .subject-card-pulse {
+      animation: subjectCardPulse 0.75s ease-out 1;
     }
     .note {
       display: block;
@@ -162,7 +246,7 @@
     .day-title {
       font-size: 16px;
       margin-bottom: 6px;
-      color: #dce9ff;
+      color: #efe6ff;
     }
     .day-list {
       list-style: none;
@@ -184,12 +268,68 @@
     }
     .kbd {
       font-family: Consolas, monospace;
-      background: #1f2c4f;
-      border: 1px solid #3a558e;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.14);
       border-bottom-width: 2px;
       border-radius: 6px;
       padding: 1px 6px;
       font-size: 13px;
+    }
+    a {
+      color: var(--accent-2);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: color 0.2s ease, border-color 0.2s ease;
+    }
+    a:hover {
+      color: #ffffff;
+      border-bottom-color: rgba(255, 255, 255, 0.35);
+    }
+    a:focus-visible,
+    button:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+    .fab {
+      position: fixed;
+      right: 16px;
+      z-index: 50;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: rgba(24, 18, 40, 0.82);
+      color: #fff;
+      box-shadow: var(--shadow);
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      font-size: 18px;
+      line-height: 1;
+      backdrop-filter: blur(8px);
+      transition: transform 0.18s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+    .fab:hover {
+      transform: translateY(-2px) scale(1.04);
+      border-color: var(--accent);
+    }
+    .fab:active {
+      transform: translateY(0) scale(0.98);
+    }
+    .fab-theme {
+      bottom: 78px;
+    }
+    .fab-top {
+      bottom: 22px;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(8px);
+      transition: opacity 0.25s ease, transform 0.25s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+    .fab-top.visible {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
     }
     .footer {
       margin-top: 28px;
@@ -289,10 +429,15 @@
   </style>
 </head>
 <body>
+  <script>
+    try {
+      if (localStorage.getItem("midterm-tone") === "mint") document.documentElement.dataset.tone = "mint";
+    } catch (e) {}
+  </script>
   <div class="wrap">
     <h1>期中考統整</h1>
 
-    <h2>考試週排程（依課表時段）</h2>
+    <h2 id="sec-schedule">考試週排程（依課表時段）</h2>
     <div class="card">
       <p class="muted" style="margin: 0 0 10px;">考試週原則：<b>每一科只考一堂</b>。課表上<b>行動裝置</b>若出現兩次（週一、週二），<b>週一為複習日、週二才是正式考試</b>，不要把週一當第二次考試。<b>大數據</b>假設<b>週二考完</b>，<b>從週三開始排程裡就不再列入大數據</b>。</p>
     </div>
@@ -335,7 +480,7 @@
               <td class="slot">B03<br>20:05-20:50</td>
               <td><span class="cell-title">行動裝置</span>複習</td>
               <td><span class="cell-title">行動裝置</span>是非題20題/選擇題30題</td>
-              <td><span class="cell-title">企業網路</span></td>
+              <td><span class="cell-title">企業網路</span>抽考40題選擇+10題選擇</td>
               <td><span class="cell-title">知識管理</span>選擇/問答題考試</td>
               <td></td>
             </tr>
@@ -343,7 +488,7 @@
               <td class="slot">B04<br>20:55-21:40</td>
               <td><span class="cell-title">行動裝置</span>複習</td>
               <td><span class="cell-title">行動裝置</span>休息</td>
-              <td><span class="cell-title">企業網路</span></td>
+              <td><span class="cell-title">企業網路</span>抽考40題選擇+10題選擇</td>
               <td><span class="cell-title">知識管理</span>休息</td>
               <td></td>
             </tr>
@@ -374,8 +519,8 @@
           <ul class="day-list">
             <li><span class="day-slot">B01 18:20-19:05</span>大數據｜休息</li>
             <li><span class="day-slot">B02 19:10-19:55</span>大數據｜休息</li>
-            <li><span class="day-slot">B03 20:05-20:50</span>企業網路</li>
-            <li><span class="day-slot">B04 20:55-21:40</span>企業網路</li>
+            <li><span class="day-slot">B03 20:05-20:50</span>企業網路｜抽考40題選擇+10題選擇</li>
+            <li><span class="day-slot">B04 20:55-21:40</span>企業網路｜抽考40題選擇+10題選擇</li>
           </ul>
         </section>
         <section class="card day-card">
@@ -416,6 +561,8 @@
         <li>資料庫選擇題 PDF：<span class="kbd">114-2-期中考試選擇題.pdf</span></li>
         <li>你的知識管理整理頁：<a href="https://yuii0919.github.io/knowledge/" target="_blank" rel="noopener">https://yuii0919.github.io/knowledge/</a></li>
         <li>致理數位學院：<a href="https://dlc.chihlee.edu.tw/mooc/index.php" target="_blank" rel="noopener">https://dlc.chihlee.edu.tw/mooc/index.php</a></li>
+        <li>企業網路 NotebookLM 題庫：<a href="https://notebooklm.google.com/notebook/1203818f-131e-48b9-9aff-a6559f174490" target="_blank" rel="noopener noreferrer">https://notebooklm.google.com/notebook/1203818f-131e-48b9-9aff-a6559f174490</a></li>
+        <li>企業網路期中考練習題（100 題單選）：<a href="https://yuii0919.github.io/enterprise-network-midterm/" target="_blank" rel="noopener">https://yuii0919.github.io/enterprise-network-midterm/</a></li>
       </ul>
     </div>
 
@@ -471,10 +618,20 @@
           <li>備註：考試週此科只考一堂</li>
         </ul>
       </section>
+
+      <section id="subject-enterprise" class="card subject-card">
+        <span class="tag t-accent">企業網路</span>
+        <ul>
+          <li>考試方式：抽考 40 題選擇 + 10 題選擇</li>
+          <li>題庫：<a href="https://notebooklm.google.com/notebook/1203818f-131e-48b9-9aff-a6559f174490" target="_blank" rel="noopener noreferrer">NotebookLM 題庫內容</a></li>
+        </ul>
+      </section>
     </div>
 
     <p class="footer">期中考加油：先求穩定拿分，再追高分。</p>
   </div>
+  <button type="button" id="fabTheme" class="fab fab-theme" aria-label="切換配色">◐</button>
+  <button type="button" id="fabTop" class="fab fab-top" aria-label="回到頂部">↑</button>
   <script>
     (function () {
       var area = document.getElementById("scheduleArea");
@@ -496,7 +653,17 @@
         "資料庫": "subject-database",
         "資料庫管理系統(下)": "subject-database",
         "大數據": "subject-bigdata",
-        "大數據概論": "subject-bigdata"
+        "大數據概論": "subject-bigdata",
+        "企業網路": "subject-enterprise"
+      };
+
+      var cardScheduleSubjects = {
+        "subject-knowledge": ["知識管理"],
+        "subject-text-mining": ["文字探勘"],
+        "subject-mobile": ["行動裝置"],
+        "subject-database": ["資料庫"],
+        "subject-bigdata": ["大數據"],
+        "subject-enterprise": ["企業網路"]
       };
 
       var selectedEls = [];
@@ -505,14 +672,56 @@
         selectedEls = [];
       }
 
+      function clearSubjectCardState() {
+        document.querySelectorAll(".subject-card").forEach(function (c) {
+          c.classList.remove("subject-card-active", "subject-card-pulse", "subject-focus");
+        });
+      }
+
+      function activateSubjectCard(cardEl) {
+        clearSubjectCardState();
+        if (!cardEl) return;
+        cardEl.classList.add("subject-card-active");
+        cardEl.classList.remove("subject-card-pulse");
+        void cardEl.offsetWidth;
+        cardEl.classList.add("subject-card-pulse");
+        window.setTimeout(function () {
+          cardEl.classList.remove("subject-card-pulse");
+        }, 800);
+      }
+
+      function highlightScheduleBySubjects(names) {
+        clearSelected();
+        if (!names || !names.length) return;
+        area.querySelectorAll(".schedule-table td").forEach(function (td) {
+          var s = getSubjectFromCell(td);
+          if (s && names.indexOf(s) !== -1) {
+            td.classList.add("schedule-selected");
+            selectedEls.push(td);
+          }
+        });
+        area.querySelectorAll(".day-list li").forEach(function (li) {
+          var s = getSubjectFromCardItem(li);
+          if (s && s !== "—" && names.indexOf(s) !== -1) {
+            li.classList.add("schedule-selected");
+            selectedEls.push(li);
+          }
+        });
+      }
+
+      function scrollToSchedule() {
+        var anchor = document.getElementById("sec-schedule");
+        if (anchor) anchor.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+
       function focusSubjectByName(subjectName) {
         var targetId = subjectMap[subjectName];
-        if (!targetId) return;
-        var target = document.getElementById(targetId);
+        var target = targetId ? document.getElementById(targetId) : null;
+        activateSubjectCard(target);
         if (!target) return;
         target.scrollIntoView({ behavior: "smooth", block: "start" });
         target.classList.add("subject-focus");
-        setTimeout(function () { target.classList.remove("subject-focus"); }, 1200);
+        window.setTimeout(function () { target.classList.remove("subject-focus"); }, 1200);
       }
 
       function getSubjectFromCell(el) {
@@ -541,8 +750,7 @@
         });
       }
 
-      var defaultView = window.innerWidth <= 700 ? "cards" : "table";
-      setView(defaultView);
+      setView("table");
       markClickable();
 
       btnTable.addEventListener("click", function () { setView("table"); });
@@ -553,6 +761,11 @@
         if (cell && area.contains(cell)) {
           var subject = getSubjectFromCell(cell);
           if (!subject) return;
+          if (cell.classList.contains("schedule-selected") && selectedEls.length === 1 && selectedEls[0] === cell) {
+            clearSelected();
+            clearSubjectCardState();
+            return;
+          }
           clearSelected();
           cell.classList.add("schedule-selected");
           selectedEls.push(cell);
@@ -564,12 +777,60 @@
         if (item && area.contains(item)) {
           var itemSubject = getSubjectFromCardItem(item);
           if (!itemSubject || itemSubject === "—") return;
+          if (item.classList.contains("schedule-selected") && selectedEls.length === 1 && selectedEls[0] === item) {
+            clearSelected();
+            clearSubjectCardState();
+            return;
+          }
           clearSelected();
           item.classList.add("schedule-selected");
           selectedEls.push(item);
           focusSubjectByName(itemSubject);
         }
       });
+
+      document.querySelectorAll(".subject-card").forEach(function (sec) {
+        sec.addEventListener("click", function () {
+          var names = cardScheduleSubjects[sec.id];
+          if (!names) return;
+          if (sec.classList.contains("subject-card-active")) {
+            clearSelected();
+            clearSubjectCardState();
+            return;
+          }
+          activateSubjectCard(sec);
+          highlightScheduleBySubjects(names);
+          scrollToSchedule();
+        });
+      });
+    })();
+  </script>
+  <script>
+    (function () {
+      var root = document.documentElement;
+      var fabTheme = document.getElementById("fabTheme");
+      var fabTop = document.getElementById("fabTop");
+      if (fabTheme) {
+        fabTheme.addEventListener("click", function () {
+          if (root.dataset.tone === "mint") {
+            root.removeAttribute("data-tone");
+            try { localStorage.removeItem("midterm-tone"); } catch (e) {}
+          } else {
+            root.dataset.tone = "mint";
+            try { localStorage.setItem("midterm-tone", "mint"); } catch (e) {}
+          }
+        });
+      }
+      if (fabTop) {
+        function updTop() {
+          fabTop.classList.toggle("visible", window.scrollY > 240);
+        }
+        window.addEventListener("scroll", updTop, { passive: true });
+        updTop();
+        fabTop.addEventListener("click", function () {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+      }
     })();
   </script>
 </body>
