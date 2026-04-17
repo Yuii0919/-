@@ -6,38 +6,38 @@
   <title>期中考統整</title>
   <style>
     :root {
-      --bg-0: #0b0f16;
-      --bg-1: #111827;
-      --bg-2: #0c1018;
-      --card: rgba(17, 24, 39, 0.88);
-      --muted: #b9a8d4;
-      --text: #f6f1ff;
-      --accent: #e879f9;
-      --accent-2: #5eead4;
-      --line: rgba(148, 163, 184, 0.18);
-      --shadow: 0 16px 42px rgba(0, 0, 0, 0.38);
-      --head-bg: rgba(30, 41, 59, 0.92);
-      --slot-bg: rgba(255, 255, 255, 0.04);
-      --ok: #5eead4;
-      --warn: #fcd34d;
-      --tag-a-bg: rgba(232, 121, 249, 0.18);
-      --tag-a-bd: rgba(232, 121, 249, 0.45);
-      --tag-b-bg: rgba(94, 234, 212, 0.16);
-      --tag-b-bd: rgba(94, 234, 212, 0.42);
+      --bg-0: #f7f3ea;
+      --bg-1: #f3eee3;
+      --bg-2: #ece6d9;
+      --card: rgba(255, 252, 246, 0.9);
+      --muted: #7a7265;
+      --text: #2f2b24;
+      --accent: #9c6f3e;
+      --accent-2: #5f8a63;
+      --line: rgba(140, 124, 103, 0.22);
+      --shadow: 0 10px 24px rgba(120, 104, 84, 0.15);
+      --head-bg: rgba(191, 174, 148, 0.45);
+      --slot-bg: rgba(118, 101, 80, 0.06);
+      --ok: #5f8a63;
+      --warn: #b2884a;
+      --tag-a-bg: rgba(156, 111, 62, 0.14);
+      --tag-a-bd: rgba(156, 111, 62, 0.36);
+      --tag-b-bg: rgba(95, 138, 99, 0.14);
+      --tag-b-bd: rgba(95, 138, 99, 0.34);
     }
     html[data-tone="mint"] {
-      --accent: #2dd4bf;
-      --accent-2: #f472b6;
-      --bg-0: #0a1214;
-      --bg-1: #0f1a1c;
-      --bg-2: #0a1012;
-      --card: rgba(15, 26, 28, 0.9);
-      --head-bg: rgba(18, 64, 72, 0.88);
-      --line: rgba(94, 234, 212, 0.22);
-      --tag-a-bg: rgba(45, 212, 191, 0.16);
-      --tag-a-bd: rgba(45, 212, 191, 0.45);
-      --tag-b-bg: rgba(244, 114, 182, 0.16);
-      --tag-b-bd: rgba(244, 114, 182, 0.42);
+      --accent: #2d9f8f;
+      --accent-2: #a35f8f;
+      --bg-0: #e9f1ec;
+      --bg-1: #e4ede7;
+      --bg-2: #dde7e1;
+      --card: rgba(250, 255, 251, 0.9);
+      --head-bg: rgba(126, 164, 146, 0.35);
+      --line: rgba(94, 140, 120, 0.22);
+      --tag-a-bg: rgba(45, 159, 143, 0.14);
+      --tag-a-bd: rgba(45, 159, 143, 0.35);
+      --tag-b-bg: rgba(163, 95, 143, 0.14);
+      --tag-b-bd: rgba(163, 95, 143, 0.35);
     }
     html {
       scroll-behavior: smooth;
@@ -48,7 +48,7 @@
       font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
       background-color: var(--bg-2);
       background-image:
-        radial-gradient(120% 55% at 50% 0%, rgba(99, 102, 241, 0.09), transparent 52%),
+        radial-gradient(120% 50% at 50% 0%, rgba(173, 145, 109, 0.08), transparent 55%),
         linear-gradient(180deg, var(--bg-1) 0%, var(--bg-0) 42%, var(--bg-2) 100%);
       background-attachment: fixed;
       color: var(--text);
@@ -57,7 +57,7 @@
     }
     html[data-tone="mint"] body {
       background-image:
-        radial-gradient(120% 55% at 50% 0%, rgba(45, 212, 191, 0.08), transparent 52%),
+        radial-gradient(120% 55% at 50% 0%, rgba(95, 138, 99, 0.08), transparent 52%),
         linear-gradient(180deg, var(--bg-1) 0%, var(--bg-0) 42%, var(--bg-2) 100%);
     }
     .wrap {
@@ -72,6 +72,8 @@
       font-size: 30px;
       letter-spacing: 0.02em;
       animation: fadeUp 0.7s ease both;
+      color: #3a332a;
+      text-shadow: none;
     }
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(10px); }
@@ -79,12 +81,12 @@
     }
     h2 {
       font-size: 22px;
-      color: #efe6ff;
+      color: #4a3f31;
       margin-top: 24px;
       padding-left: 12px;
       border-left: 4px solid var(--accent);
     }
-    h3 { font-size: 18px; color: #e8ddff; }
+    h3 { font-size: 18px; color: #4a3f31; }
     .sub { color: var(--muted); margin-bottom: 16px; }
     .grid {
       display: grid;
@@ -101,8 +103,8 @@
     }
     .card:not(.schedule-wrap):hover {
       transform: translateY(-2px);
-      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.42);
-      border-color: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 16px 30px rgba(120, 104, 84, 0.2);
+      border-color: rgba(156, 111, 62, 0.25);
     }
     .tag {
       display: inline-block;
@@ -112,10 +114,11 @@
       margin-right: 6px;
       margin-bottom: 6px;
       border: 1px solid transparent;
+      font-weight: 600;
     }
-    .t-accent { background: var(--tag-a-bg); border-color: var(--tag-a-bd); color: #f5e0ff; }
-    .t-ok { background: var(--tag-b-bg); border-color: var(--tag-b-bd); color: #d7fff4; }
-    .t-warn { background: rgba(252, 211, 77, 0.14); border-color: rgba(252, 211, 77, 0.38); color: #fff1c2; }
+    .t-accent { background: var(--tag-a-bg); border-color: var(--tag-a-bd); color: #6a4e30; }
+    .t-ok { background: var(--tag-b-bg); border-color: var(--tag-b-bd); color: #355b39; }
+    .t-warn { background: rgba(178, 136, 74, 0.14); border-color: rgba(178, 136, 74, 0.35); color: #6e522d; }
     ul { margin: 8px 0 0; padding-left: 20px; }
     li { margin: 5px 0; }
     .muted { color: var(--muted); font-size: 14px; }
@@ -128,10 +131,10 @@
       margin-bottom: 10px;
     }
     .switch-btn {
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      background: rgba(255, 255, 255, 0.06);
-      color: #f3ecff;
-      border-radius: 8px;
+      border: 1px solid rgba(140, 124, 103, 0.28);
+      background: rgba(255, 255, 255, 0.45);
+      color: #4a3f31;
+      border-radius: 12px;
       padding: 6px 10px;
       font-size: 13px;
       cursor: pointer;
@@ -145,10 +148,10 @@
       transform: translateY(0);
     }
     .switch-btn.active {
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(156, 111, 62, 0.16);
       border-color: var(--accent);
-      color: #ffffff;
-      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12);
+      color: #4a3f31;
+      box-shadow: 0 0 0 1px rgba(156, 111, 62, 0.16);
     }
     .schedule-table-view { display: block; }
     .schedule-card-view { display: none; }
@@ -175,13 +178,13 @@
     }
     .schedule-table th {
       background: var(--head-bg);
-      color: #f0e8ff;
+      color: #4a3f31;
       text-align: center;
     }
     .slot {
       width: 130px;
       background: var(--slot-bg);
-      color: #e6dcff;
+      color: #5e5040;
       font-weight: 600;
       white-space: nowrap;
     }
@@ -189,7 +192,7 @@
       display: block;
       font-weight: 700;
       margin-bottom: 4px;
-      color: #fff7ff;
+      color: #3f3529;
     }
     .schedule-table td,
     .day-list li {
@@ -201,13 +204,13 @@
     }
     .schedule-table td.clickable:hover,
     .day-list li.clickable:hover {
-      border-color: rgba(255, 255, 255, 0.22);
-      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(156, 111, 62, 0.35);
+      background: rgba(156, 111, 62, 0.08);
     }
     .schedule-selected {
-      background: rgba(255, 255, 255, 0.1) !important;
+      background: rgba(156, 111, 62, 0.12) !important;
       border-color: var(--accent) !important;
-      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12), 0 8px 18px rgba(0, 0, 0, 0.22);
+      box-shadow: 0 0 0 1px rgba(156, 111, 62, 0.2), 0 8px 18px rgba(90, 74, 54, 0.18);
       transform: translateY(-1px) scale(1.01);
     }
     .subject-card {
@@ -220,11 +223,11 @@
     }
     .subject-focus {
       border-color: var(--accent) !important;
-      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.14), 0 10px 24px rgba(0, 0, 0, 0.26);
+      box-shadow: 0 0 0 1px rgba(156, 111, 62, 0.18), 0 10px 24px rgba(90, 74, 54, 0.18);
     }
     .subject-card-active {
       border-color: var(--accent) !important;
-      box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.16), 0 16px 40px rgba(0, 0, 0, 0.45) !important;
+      box-shadow: 0 0 0 2px rgba(156, 111, 62, 0.18), 0 14px 34px rgba(90, 74, 54, 0.2) !important;
     }
     @keyframes subjectCardPulse {
       0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.35); transform: translateY(-2px) scale(1); }
@@ -246,7 +249,7 @@
     .day-title {
       font-size: 16px;
       margin-bottom: 6px;
-      color: #efe6ff;
+      color: #4a3f31;
     }
     .day-list {
       list-style: none;
@@ -268,8 +271,8 @@
     }
     .kbd {
       font-family: Consolas, monospace;
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(156, 111, 62, 0.08);
+      border: 1px solid rgba(156, 111, 62, 0.25);
       border-bottom-width: 2px;
       border-radius: 6px;
       padding: 1px 6px;
@@ -282,8 +285,8 @@
       transition: color 0.2s ease, border-color 0.2s ease;
     }
     a:hover {
-      color: #ffffff;
-      border-bottom-color: rgba(255, 255, 255, 0.35);
+      color: #3f5f42;
+      border-bottom-color: rgba(63, 95, 66, 0.35);
     }
     a:focus-visible,
     button:focus-visible {
@@ -297,9 +300,9 @@
       width: 46px;
       height: 46px;
       border-radius: 50%;
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      background: rgba(24, 18, 40, 0.82);
-      color: #fff;
+      border: 1px solid rgba(140, 124, 103, 0.28);
+      background: rgba(255, 252, 246, 0.85);
+      color: #4a3f31;
       box-shadow: var(--shadow);
       cursor: pointer;
       display: grid;
@@ -558,7 +561,7 @@
     <h2>檔案與連結</h2>
     <div class="card">
       <ul>
-        <li>資料庫選擇題 PDF：<span class="kbd">114-2-期中考試選擇題.pdf</span></li>
+        <li>資料庫選擇題 PDF：<a class="kbd" href="114-2-期中考試選擇題.pdf" target="_blank" rel="noopener">114-2-期中考試選擇題.pdf</a></li>
         <li>你的知識管理整理頁：<a href="https://yuii0919.github.io/knowledge/" target="_blank" rel="noopener">https://yuii0919.github.io/knowledge/</a></li>
         <li>致理數位學院：<a href="https://dlc.chihlee.edu.tw/mooc/index.php" target="_blank" rel="noopener">https://dlc.chihlee.edu.tw/mooc/index.php</a></li>
         <li>文字探勘期中練習題：<a href="https://yuii0919.github.io/text-mining-midterm-review/" target="_blank" rel="noopener">https://yuii0919.github.io/text-mining-midterm-review/</a></li>
@@ -733,10 +736,14 @@
       }
 
       function getSubjectFromCardItem(el) {
-        var text = (el.textContent || "").trim();
+        if (!el) return "";
+        var clone = el.cloneNode(true);
+        var slot = clone.querySelector(".day-slot");
+        if (slot) slot.remove();
+        var text = (clone.textContent || "").trim();
         if (!text) return "";
-        var payload = text.split(" ").slice(1).join(" ").trim();
-        var subjectPart = payload.split("｜")[0].trim();
+        var subjectPart = text.split("｜")[0].trim();
+        subjectPart = subjectPart.replace(/^\d{1,2}:\d{2}-\d{1,2}:\d{2}/, "").trim();
         return subjectPart;
       }
 
