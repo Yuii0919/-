@@ -340,6 +340,127 @@
       font-size: 13px;
       text-align: center;
     }
+    .quiz-tool {
+      margin-top: 8px;
+    }
+    .quiz-input {
+      width: 100%;
+      min-height: 220px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font: inherit;
+      line-height: 1.5;
+      background: rgba(255, 255, 255, 0.6);
+      color: var(--text);
+      resize: vertical;
+    }
+    .quiz-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .quiz-btn {
+      border: 1px solid rgba(140, 124, 103, 0.28);
+      background: rgba(255, 255, 255, 0.45);
+      color: #4a3f31;
+      border-radius: 12px;
+      padding: 7px 12px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    }
+    .quiz-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+    }
+    .quiz-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+    .quiz-meta {
+      margin-top: 10px;
+      margin-bottom: 0;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .quiz-meta.ok {
+      color: #355b39;
+    }
+    .quiz-meta.warn {
+      color: #7d5530;
+    }
+    .quiz-container {
+      margin-top: 12px;
+      display: grid;
+      gap: 12px;
+    }
+    .quiz-empty {
+      margin: 0;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .quiz-question-title {
+      margin: 0 0 10px;
+      font-size: 17px;
+      color: #3f3529;
+    }
+    .quiz-options {
+      display: grid;
+      gap: 8px;
+    }
+    .quiz-option {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 8px 10px;
+      background: rgba(255, 255, 255, 0.5);
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+    .quiz-option.correct-answer {
+      border-color: rgba(95, 138, 99, 0.6);
+      background: rgba(95, 138, 99, 0.16);
+    }
+    .quiz-option.user-wrong {
+      border-color: rgba(173, 89, 79, 0.62);
+      background: rgba(173, 89, 79, 0.16);
+    }
+    .quiz-option input {
+      margin-top: 3px;
+      flex-shrink: 0;
+    }
+    .quiz-warn {
+      margin: 8px 0 0;
+      font-size: 12px;
+      color: #7d5530;
+    }
+    .quiz-status {
+      margin: 8px 0 0;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--muted);
+    }
+    .quiz-status.ok {
+      color: #355b39;
+    }
+    .quiz-status.bad {
+      color: #8e3d38;
+    }
+    .quiz-result {
+      margin-top: 12px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 10px 12px;
+      background: rgba(255, 255, 255, 0.5);
+      font-weight: 700;
+      color: #3f3529;
+      min-height: 22px;
+    }
     @media (max-width: 900px) {
       .wrap {
         padding: 18px 12px 40px;
@@ -428,6 +549,12 @@
       .day-list li {
         font-size: 12px;
       }
+      .quiz-question-title {
+        font-size: 16px;
+      }
+      .quiz-option {
+        font-size: 13px;
+      }
     }
   </style>
 </head>
@@ -439,6 +566,34 @@
   </script>
   <div class="wrap">
     <h1>期中考統整</h1>
+
+    <h2 id="sec-quiz">網頁測驗題（綠色格 = 答案）</h2>
+    <div class="card quiz-tool">
+      <p class="muted" style="margin: 0 0 8px;">把題目貼到下方，規則是：<b>選項後面有綠色格（例如 🟩）就會判定為正確答案</b>。支援單選或多選（多個綠色格）。</p>
+      <textarea id="quizInput" class="quiz-input" placeholder="題目格式範例：
+1. Kotlin 的 val 敘述何者正確？
+A. 可重新賦值
+B. 宣告後不可重新賦值 🟩
+C. 只能在 Java 使用
+D. 一定是 Int
+
+2. 下列哪些屬於 SQL DML 指令？
+A. SELECT 🟩
+B. INSERT 🟩
+C. UPDATE 🟩
+D. INDEX"></textarea>
+      <div class="quiz-actions">
+        <button id="btnSampleQuiz" type="button" class="quiz-btn">載入範例</button>
+        <button id="btnBuildQuiz" type="button" class="quiz-btn">產生測驗</button>
+        <button id="btnSubmitQuiz" type="button" class="quiz-btn" disabled>交卷計分</button>
+        <button id="btnClearQuiz" type="button" class="quiz-btn">清空</button>
+      </div>
+      <p id="quizMeta" class="quiz-meta">尚未產生測驗，請先貼題目再按「產生測驗」。</p>
+      <div id="quizContainer" class="quiz-container">
+        <p class="quiz-empty">題目會顯示在這裡。</p>
+      </div>
+      <div id="quizResult" class="quiz-result" aria-live="polite"></div>
+    </div>
 
     <h2 id="sec-schedule">考試週排程（依課表時段）</h2>
     <div class="card">
@@ -637,6 +792,264 @@
   </div>
   <button type="button" id="fabTheme" class="fab fab-theme" aria-label="切換配色">◐</button>
   <button type="button" id="fabTop" class="fab fab-top" aria-label="回到頂部">↑</button>
+  <script>
+    (function () {
+      var quizInput = document.getElementById("quizInput");
+      var btnSampleQuiz = document.getElementById("btnSampleQuiz");
+      var btnBuildQuiz = document.getElementById("btnBuildQuiz");
+      var btnSubmitQuiz = document.getElementById("btnSubmitQuiz");
+      var btnClearQuiz = document.getElementById("btnClearQuiz");
+      var quizMeta = document.getElementById("quizMeta");
+      var quizContainer = document.getElementById("quizContainer");
+      var quizResult = document.getElementById("quizResult");
+
+      if (!quizInput || !btnSampleQuiz || !btnBuildQuiz || !btnSubmitQuiz || !btnClearQuiz || !quizMeta || !quizContainer || !quizResult) return;
+
+      var quizState = [];
+      var questionPattern = /^\s*(?:Q(?:uestion)?\s*)?(\d{1,3})[\.\、\)）]\s*(.+)$/i;
+      var optionPattern = /^\s*[(（]?\s*([A-Ha-h])\s*[)）\.\、:：\-]?\s*(.+)$/;
+      var markerPattern = /(🟩|🟢|✅|☑|✔|【答案】|［答案］|\(答案\)|（答案）)/g;
+
+      function normalizeLine(line) {
+        return (line || "").replace(/\u00a0/g, " ").trim();
+      }
+
+      function hasCorrectMarker(text) {
+        if (!text) return false;
+        return /(🟩|🟢|✅|☑|✔|【答案】|［答案］|\(答案\)|（答案）)/.test(text);
+      }
+
+      function cleanOptionText(text) {
+        return normalizeLine((text || "").replace(markerPattern, "").replace(/\s{2,}/g, " "));
+      }
+
+      function parseQuizText(rawText) {
+        var lines = String(rawText || "").split(/\r?\n/);
+        var questions = [];
+        var current = null;
+
+        function pushCurrent() {
+          if (!current) return;
+          if (current.options.length > 0) {
+            current.correctIndices = current.options
+              .map(function (opt, idx) { return opt.isCorrect ? idx : -1; })
+              .filter(function (idx) { return idx !== -1; });
+            questions.push(current);
+          }
+          current = null;
+        }
+
+        lines.forEach(function (rawLine) {
+          var line = normalizeLine(rawLine);
+          if (!line) return;
+
+          var questionMatch = line.match(questionPattern);
+          if (questionMatch) {
+            pushCurrent();
+            current = {
+              number: questionMatch[1],
+              text: normalizeLine(questionMatch[2]),
+              options: [],
+              correctIndices: []
+            };
+            return;
+          }
+
+          if (!current) return;
+
+          var optionMatch = line.match(optionPattern);
+          if (optionMatch) {
+            var optionText = optionMatch[2];
+            current.options.push({
+              label: optionMatch[1].toUpperCase(),
+              text: cleanOptionText(optionText),
+              isCorrect: hasCorrectMarker(optionText)
+            });
+            return;
+          }
+
+          if (current.options.length === 0) {
+            current.text = normalizeLine(current.text + " " + line);
+          } else {
+            var lastOption = current.options[current.options.length - 1];
+            lastOption.text = normalizeLine(lastOption.text + " " + cleanOptionText(line));
+            if (hasCorrectMarker(line)) lastOption.isCorrect = true;
+          }
+        });
+
+        pushCurrent();
+        return questions;
+      }
+
+      function arraysEqual(a, b) {
+        if (a.length !== b.length) return false;
+        for (var i = 0; i < a.length; i += 1) {
+          if (a[i] !== b[i]) return false;
+        }
+        return true;
+      }
+
+      function setMeta(text, mode) {
+        quizMeta.textContent = text;
+        quizMeta.classList.remove("ok", "warn");
+        if (mode) quizMeta.classList.add(mode);
+      }
+
+      function renderEmptyState(text) {
+        quizContainer.innerHTML = "";
+        var p = document.createElement("p");
+        p.className = "quiz-empty";
+        p.textContent = text;
+        quizContainer.appendChild(p);
+      }
+
+      function renderQuiz(questions) {
+        quizContainer.innerHTML = "";
+        quizResult.textContent = "";
+        questions.forEach(function (q, qIdx) {
+          var card = document.createElement("section");
+          card.className = "card quiz-question";
+          card.dataset.questionIndex = String(qIdx);
+
+          var title = document.createElement("h3");
+          title.className = "quiz-question-title";
+          title.textContent = (qIdx + 1) + ". " + q.text;
+          card.appendChild(title);
+
+          var optionsWrap = document.createElement("div");
+          optionsWrap.className = "quiz-options";
+
+          q.options.forEach(function (opt, optIdx) {
+            var label = document.createElement("label");
+            label.className = "quiz-option";
+            label.dataset.optionIndex = String(optIdx);
+
+            var input = document.createElement("input");
+            input.type = "checkbox";
+            input.name = "q-" + qIdx;
+            input.value = String(optIdx);
+
+            var text = document.createElement("span");
+            text.textContent = opt.label + ". " + opt.text;
+
+            label.appendChild(input);
+            label.appendChild(text);
+            optionsWrap.appendChild(label);
+          });
+
+          card.appendChild(optionsWrap);
+
+          if (!q.correctIndices.length) {
+            var warn = document.createElement("p");
+            warn.className = "quiz-warn";
+            warn.textContent = "提醒：此題沒有偵測到綠色格標記，請檢查選項後是否有放 🟩。";
+            card.appendChild(warn);
+          }
+
+          var status = document.createElement("p");
+          status.className = "quiz-status";
+          status.textContent = "尚未作答";
+          card.appendChild(status);
+
+          quizContainer.appendChild(card);
+        });
+      }
+
+      function submitQuiz() {
+        if (!quizState.length) return;
+
+        var total = quizState.length;
+        var answered = 0;
+        var score = 0;
+
+        quizState.forEach(function (q, qIdx) {
+          var card = quizContainer.querySelector('[data-question-index="' + qIdx + '"]');
+          if (!card) return;
+
+          var inputs = Array.from(card.querySelectorAll('input[type="checkbox"]'));
+          var selected = inputs
+            .map(function (input, idx) { return input.checked ? idx : -1; })
+            .filter(function (idx) { return idx !== -1; });
+
+          if (selected.length > 0) answered += 1;
+
+          var sortedSelected = selected.slice().sort(function (a, b) { return a - b; });
+          var sortedCorrect = q.correctIndices.slice().sort(function (a, b) { return a - b; });
+          var isCorrect = arraysEqual(sortedSelected, sortedCorrect);
+          if (isCorrect) score += 1;
+
+          var labels = card.querySelectorAll(".quiz-option");
+          labels.forEach(function (label, idx) {
+            label.classList.remove("correct-answer", "user-wrong");
+            if (q.correctIndices.indexOf(idx) !== -1) label.classList.add("correct-answer");
+            if (selected.indexOf(idx) !== -1 && q.correctIndices.indexOf(idx) === -1) label.classList.add("user-wrong");
+          });
+
+          var status = card.querySelector(".quiz-status");
+          if (status) {
+            status.textContent = isCorrect ? "答對" : "答錯";
+            status.classList.remove("ok", "bad");
+            status.classList.add(isCorrect ? "ok" : "bad");
+          }
+        });
+
+        var percent = total ? Math.round((score / total) * 100) : 0;
+        quizResult.textContent = "成績：" + score + " / " + total + " 題（" + percent + "%），已作答 " + answered + " 題。";
+      }
+
+      function buildQuiz() {
+        var parsed = parseQuizText(quizInput.value);
+        quizState = parsed;
+        if (!quizState.length) {
+          renderEmptyState("沒有成功解析題目。請確認格式為「題號 + 選項 A/B/C...」，並在正確選項後放 🟩。");
+          btnSubmitQuiz.disabled = true;
+          quizResult.textContent = "";
+          setMeta("未偵測到可用題目，請調整格式後重試。", "warn");
+          return;
+        }
+        renderQuiz(quizState);
+        btnSubmitQuiz.disabled = false;
+        setMeta("已產生 " + quizState.length + " 題。規則：選項後有綠色格（🟩）的都會視為答案。", "ok");
+      }
+
+      function loadSampleQuiz() {
+        quizInput.value = [
+          "1. Kotlin 的 val 敘述何者正確？",
+          "A. 可重新賦值",
+          "B. 宣告後不可重新賦值 🟩",
+          "C. 只能在 Java 使用",
+          "D. 一定是 Int",
+          "",
+          "2. 下列哪些屬於 SQL DML 指令？",
+          "A. SELECT 🟩",
+          "B. INSERT 🟩",
+          "C. UPDATE 🟩",
+          "D. INDEX",
+          "",
+          "3. Android 事件監聽常見寫法是？",
+          "A. setOnClickListener { ... } 🟩",
+          "B. addMouseListener()",
+          "C. watchClickEvent()",
+          "D. onTouchRoot()"
+        ].join("\n");
+        setMeta("已載入範例題目，按「產生測驗」即可開始。");
+      }
+
+      function clearQuiz() {
+        quizState = [];
+        quizInput.value = "";
+        quizResult.textContent = "";
+        btnSubmitQuiz.disabled = true;
+        setMeta("尚未產生測驗，請先貼題目再按「產生測驗」。");
+        renderEmptyState("題目會顯示在這裡。");
+      }
+
+      btnSampleQuiz.addEventListener("click", loadSampleQuiz);
+      btnBuildQuiz.addEventListener("click", buildQuiz);
+      btnSubmitQuiz.addEventListener("click", submitQuiz);
+      btnClearQuiz.addEventListener("click", clearQuiz);
+    })();
+  </script>
   <script>
     (function () {
       var area = document.getElementById("scheduleArea");
